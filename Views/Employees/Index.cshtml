@@ -1,0 +1,90 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<EMS.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="text-right">
+    <!-- Search Form -->
+    <form method="get" asp-action="Index" class="input-group input-group-sm" style="max-width: 250px;">
+        <input type="text" name="filter" class="form-control float-right" placeholder="Search" value="@ViewData["Filter"]" />
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-default">
+              Search
+            </button>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Full Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Position
+            </th>
+            <th>
+                Department
+            </th>
+            <th>
+                Date Hired
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateHired)
+            </td>
+         
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.EmployeeId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.EmployeeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div class="card-footer clearfix">
+    <ul class="pagination pagination-sm m-0 float-right">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewData["Filter"] }), new PagedListRenderOptions
+        {
+            LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                LinkToPreviousPageFormat = "«", 
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                LinkToNextPageFormat = "»",
+                DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                DisplayLinkToLastPage = PagedListDisplayMode.Never  
+                })
+    </ul>
+</div>

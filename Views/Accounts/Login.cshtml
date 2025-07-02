@@ -1,0 +1,157 @@
+﻿@using EMS.Models
+
+@model LoginView
+@{
+    Layout = "";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EMS</title>
+    <!-- Favicon -->
+    <link href="~/dist/img/denr.png" rel="icon">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition login-page">
+
+
+
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary">
+            
+
+
+            <form id="account" asp-controller="Accounts" asp-action="Login" method="post">
+                <div class="card-body">
+
+
+                    @if (TempData["Message"] != null)
+                    {
+                        <p class="login-box-msg text-danger">Incorrect Login Credentials</p>
+
+                    }
+                    else
+                    {
+                        <p class="login-box-msg">Sign in to start your session</p>
+                    }
+
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="input-group mb-3">
+                        <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="input-group mb-3">
+                        <input asp-for="Password" type="password" class="form-control" autocomplete="current-password" aria-required="true" id="passwordInput" />
+                        <div class="input-group-append">
+                        </div>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility()">
+                                <span class="fas fa-eye" id="togglePasswordIcon"></span>
+                            </button>
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="remember" asp-for="RememberMe">
+                                <label for="remember">
+                                    Remember Me
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+
+                        <div class="col-4">
+                            <button id="login-submit" type="submit" class="btn btn-primary btn-right">Sign In</button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../dist/js/adminlte.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        @if (TempData["Message"] != null)
+        {
+                <text>
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: '@Html.Raw(TempData["Message"].ToString())',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: false,
+                        background: '#fff3cd',
+                        color: '#856404'
+                    });
+                </text>
+        }
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("passwordInput");
+            var togglePasswordIcon = document.getElementById("togglePasswordIcon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePasswordIcon.className = "fas fa-eye-slash"; //This changes the icon to a slash if the password is visible.
+
+                //Timer for Password Visibility (Crossfingers na magwork)
+                setTimeout(function () {
+                    passwordInput.type = "password";
+
+                    togglePasswordIcon.className = "fas fa-eye"; // Change back to the original icon
+                }, 1000); // 1-Second Byakugan Effect
+            } else {
+                passwordInput.type = "password";
+                togglePasswordIcon.className = "fas fa-eye"; // Change back to its original icon
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
